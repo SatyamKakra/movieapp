@@ -16,7 +16,7 @@ export class MovieList extends Component {
         <div className='movies-list'>
           {moviesArr.map((movieElem) => (
             <div className="card movie-card">
-              <img src="https://collider.com/wp-content/uploads/the-avengers-movie-poster-banners-03.jpg" style={{ height: '40vh', width: '20vw' }} className="card-img-top movie-img" alt="..." />
+              <img src={`https://image.tmdb.org/t/p/original${movieElem.backdrop_path}`} style={{ height: '40vh', width: '20vw' }} className="card-img-top movie-img" alt="..." />
 
               <h5 className="card-title movie-title">{movieElem.title}</h5>
 
