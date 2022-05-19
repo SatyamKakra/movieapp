@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { movies } from './MovieData';
+import axios from 'axios'
 
 
 export class MovieList extends Component {
 
   constructor() {
+    console.log('constructor first')
     super();
 
     this.state = {
@@ -13,7 +15,17 @@ export class MovieList extends Component {
     };
   }
 
+async componentDidMount(){
+    const res = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=912d14a30748e1627dadb7802c8f3652&language=en-US&page=1`)
+    let movieData = res.data
+    console.log(movieData)
+
+    console.log('mounting done with CDM third')
+  }
+
+
   render() {
+    console.log('render second')
     let moviesArr = movies.results;
 
     return (
@@ -47,15 +59,15 @@ export class MovieList extends Component {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <ul className="pagination">
+              <li className="page-item"><a className="page-link" href="#">Previous</a></li>
               
               {this.state.parr.map((value)=>(
 
-              <li class="page-item"><a class="page-link" href="#">{value}</a></li>
+              <li className="page-item"><a className="page-link" href="#">{value}</a></li>
               ))}
 
-              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+              <li className="page-item"><a className="page-link" href="#">Next</a></li>
             </ul>
           </nav>
         </div>
