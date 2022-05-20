@@ -1,53 +1,99 @@
 import React, { Component } from 'react'
+import { movies } from './MovieData'
 
 export class Favourites extends Component {
+    constructor() {
+        super()
+
+        this.state = {
+            genres: []
+        }
+
+    }
     render() {
+        const moviesArr = movies.results
+        let genreids = {
+            28: "Action",
+            12: "Adventure",
+            16: "Animation",
+            35: "Comedy",
+            80: "Crime",
+            99: "Documentary",
+            18: "Drama",
+            10751: "Family",
+            14: "Fantasy",
+            36: "History",
+            27: "Horror",
+            10402: "Music",
+            9648: "Mystery",
+            10749: "Romance",
+            878: "Sci-Fi",
+            10770: "TV",
+            53: "Thriller",
+            10752: "War",
+            37: "Western",
+        };
+
+        let tempArr = []
+
+        moviesArr.map((moviesObj) => {
+            if (!tempArr.includes(genreids[moviesObj.genre_ids[0]])) {
+                tempArr.push(genreids[moviesObj.genre_ids[0]])
+            }
+        })
+
+        tempArr.unshift('All genres')
+
         return (
             <div className='main'>
                 <div className='row'>
                     <div className='col-3'>
                         <ul className="list-group genre-selector">
-                            <li className="list-group-item">Favourites</li>
-                            <li className="list-group-item">Action</li>
-                            <li className="list-group-item">Action</li>
-                            <li className="list-group-item">Action</li>
-                            <li className="list-group-item">Action</li>
+
+                            {
+                                tempArr.map((genres)=>(
+                                    <li className="list-group-item">{genres}</li>
+                                ))
+
+                            }
+
+
+
                         </ul>
                     </div>
                     <div className='col-9 favourites-table'>
 
                         <div className='row'>
-                            <input type='text' className='input-group-text col' />
+                            <input placeholder='Search' type='text' className='input-group-text col' />
                             <input type='number' className='input-group-text col' />
                         </div>
                         <div className='row'>
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                        <th>Poster</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Genre</th>
+                                        <th scope="col">popularity</th>
+                                        <th scope="col">Ratings</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    {
+                                        moviesArr.map((moviesElem) => (
+                                            <tr>
+                                                <td><img style={{ width: '6rem' }} src={`https://image.tmdb.org/t/p/original${moviesElem.backdrop_path}`}></img></td>
+                                                <th scope="row">{moviesElem.title}</th>
+                                                <td>{genreids[moviesElem.genre_ids[0]]}</td>
+                                                <td>{moviesElem.popularity}</td>
+                                                <td>{moviesElem.vote_average}</td>
+                                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                            </tr>
+                                        ))
+                                    }
+
+
                                 </tbody>
                             </table>
 
