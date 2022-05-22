@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { movies } from './MovieData';
 import axios from 'axios'
+import { movies } from './MovieData';
 
 
 export class MovieList extends Component {
@@ -13,7 +14,8 @@ export class MovieList extends Component {
       hover: "",
       parr: [1],
       movies: [],
-      currPage: 1
+      currPage: 1,
+      favourites: []
     };
   }
 
@@ -71,6 +73,32 @@ export class MovieList extends Component {
     }
   }
 
+  handleFavourites = (movieObj) => {
+    let oldData = JSON.parse(localStorage.getItem('movies-app') || '[]')
+
+    if (this.state.favourites.includes(movieObj.id)) {
+      oldData = oldData.filter((movie) => movie.id != movieObj.id)
+
+    }
+    else {
+      oldData.push(movieObj)
+    }
+    localStorage.setItem("movies-app", JSON.stringify(oldData))
+    console.log(oldData)
+
+    this.handleFavouritesState()
+  }
+
+  handleFavouritesState = () => {
+    let oldData = JSON.parse(localStorage.getItem('movies-app') || '[]')
+
+    let temp = oldData.map((movie) => movie.id)
+
+    this.setState({
+      favourites: [...temp]
+    })
+  }
+
   render() {
     console.log('render second')
 
@@ -96,7 +124,9 @@ export class MovieList extends Component {
 
               {this.state.hover == movieElem.id && (
 
-                <a href="#" className="btn btn-primary movies-button text-center">Add to Favourites</a>
+                <a className="btn btn-primary movies-button text-center" onClick={() => this.handleFavourites(movieElem)}>
+                  {this.state.favourites.includes(movieElem.id) ? "Remove from favourites" : "Add to Favourites"}
+                </a>
               )}
               <div />
 
