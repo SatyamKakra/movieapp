@@ -7,12 +7,13 @@ export class Favourites extends Component {
 
         this.state = {
             genres: [],
-            currgenre : 'All genres'
+            currgenre : 'All genres',
+            movies : []
         }
 
     }
-    render() {
-        const moviesArr = movies.results
+
+    componentDidMount(){
         let genreids = {
             28: "Action",
             12: "Adventure",
@@ -35,15 +36,48 @@ export class Favourites extends Component {
             37: "Western",
         };
 
+        let data = JSON.parse(localStorage.getItem('movies-app') || '[]')
+        
         let tempArr = []
 
-        moviesArr.map((moviesObj) => {
+        data.map((moviesObj) => {
             if (!tempArr.includes(genreids[moviesObj.genre_ids[0]])) {
                 tempArr.push(genreids[moviesObj.genre_ids[0]])
             }
         })
-
         tempArr.unshift('All genres')
+
+        this.setState({
+            movies : [...data],
+            genres : [...tempArr]
+        })
+    }
+    render() {
+       
+        let genreids = {
+            28: "Action",
+            12: "Adventure",
+            16: "Animation",
+            35: "Comedy",
+            80: "Crime",
+            99: "Documentary",
+            18: "Drama",
+            10751: "Family",
+            14: "Fantasy",
+            36: "History",
+            27: "Horror",
+            10402: "Music",
+            9648: "Mystery",
+            10749: "Romance",
+            878: "Sci-Fi",
+            10770: "TV",
+            53: "Thriller",
+            10752: "War",
+            37: "Western",
+        };
+        
+
+        
 
         return (
             <div className='main'>
@@ -52,7 +86,7 @@ export class Favourites extends Component {
                         <ul className="list-group genre-selector">
 
                             {
-                                tempArr.map((genre)=>(
+                                this.state.genres.map((genre)=>(
                                     this.state.currgenre == genre ?
                                     <li style={{background:'#3f51b5' , color:'white' , fontWeight:'bold'}} className="list-group-item">{genre}</li> :
                                     <li style={{color:'#3f51b5'}} className="list-group-item">{genre}</li>
@@ -84,7 +118,7 @@ export class Favourites extends Component {
                                 </thead>
                                 <tbody>
                                     {
-                                        moviesArr.map((moviesElem) => (
+                                        this.state.movies.map((moviesElem) => (
                                             <tr>
                                                 <td><img style={{ width: '6rem' }} src={`https://image.tmdb.org/t/p/original${moviesElem.backdrop_path}`}></img></td>
                                                 <th scope="row">{moviesElem.title}</th>
